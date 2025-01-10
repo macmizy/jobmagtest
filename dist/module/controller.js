@@ -23,10 +23,10 @@ exports.JobController.post('/login', (req, res) => __awaiter(void 0, void 0, voi
     try {
         const { username, password } = req.body;
         const { data, message, code } = yield service_1.Service.login(username, password);
-        return responseService_1.ResponseService.successResponse(res, data, message, code);
+        responseService_1.ResponseService.successResponse(res, data, message, code);
     }
     catch (err) {
-        return responseService_1.ResponseService.errorResponse(res, err.message, 500);
+        responseService_1.ResponseService.errorResponse(res, err.message, 500);
     }
 }));
 // get all jobs 
@@ -34,13 +34,51 @@ exports.JobController.get('/jobs', auth_1.authenticateToken, (req, res) => __awa
     try {
         const { type, remote } = req.query;
         const { data, message, code } = yield service_1.Service.getJobs(type, remote);
-        return responseService_1.ResponseService.successResponse(res, data, message, code);
+        responseService_1.ResponseService.successResponse(res, data, message, code);
     }
     catch (err) {
-        return responseService_1.ResponseService.errorResponse(res, err.message, 500);
+        responseService_1.ResponseService.errorResponse(res, err.message, 500);
+    }
+}));
+// save a job 
+exports.JobController.post('/jobs/save/:id', auth_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { data, message, code } = yield service_1.Service.saveJob(id);
+        responseService_1.ResponseService.successResponse(res, data, message, code);
+    }
+    catch (err) {
+        responseService_1.ResponseService.errorResponse(res, err.message, 500);
+    }
+}));
+// retrieve saved jobs
+exports.JobController.get('/jobs/saved', auth_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { data, message, code } = yield service_1.Service.getSavedJobs();
+        responseService_1.ResponseService.successResponse(res, data, message, code);
+    }
+    catch (err) {
+        responseService_1.ResponseService.errorResponse(res, err.message, 500);
+    }
+}));
+// job summary
+exports.JobController.get('/jobs/summary', auth_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { data, message, code } = yield service_1.Service.jobSummary();
+        responseService_1.ResponseService.successResponse(res, data, message, code);
+    }
+    catch (err) {
+        responseService_1.ResponseService.errorResponse(res, err.message, 500);
     }
 }));
 //get jobs by Id 
-// save a job 
-// retrieve saved jobs
-// job summary
+exports.JobController.get('/jobs/:id', auth_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { data, message, code } = yield service_1.Service.getJobById(id);
+        responseService_1.ResponseService.successResponse(res, data, message, code);
+    }
+    catch (err) {
+        responseService_1.ResponseService.errorResponse(res, err.message, 500);
+    }
+}));
